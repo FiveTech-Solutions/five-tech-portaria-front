@@ -3,6 +3,19 @@
 -- Enable necessary extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- Table for system users (porteiros, supervisores, etc.)
+CREATE TABLE IF NOT EXISTS usuarios (
+    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    telefone VARCHAR(20),
+    cargo VARCHAR(50) NOT NULL DEFAULT 'porteiro', -- porteiro, supervisor, administrador
+    turno VARCHAR(20) NOT NULL DEFAULT 'diurno', -- diurno, noturno, integral
+    ativo BOOLEAN DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Table for parking spots (vagas)
 CREATE TABLE IF NOT EXISTS vagas (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -81,6 +94,9 @@ END;
 $$ language 'plpgsql';
 
 -- Add triggers to update updated_at automatically
+CREATE TRIGGER update_usuarios_updated_at BEFORE UPDATE ON usuarios
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
 CREATE TRIGGER update_vagas_updated_at BEFORE UPDATE ON vagas
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -91,6 +107,7 @@ CREATE TRIGGER update_veiculos_updated_at BEFORE UPDATE ON veiculos
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- Enable Row Level Security (RLS)
+ALTER TABLE usuarios ENABLE ROW LEVEL SECURITY;
 ALTER TABLE vagas ENABLE ROW LEVEL SECURITY;
 ALTER TABLE pessoas ENABLE ROW LEVEL SECURITY;
 ALTER TABLE veiculos ENABLE ROW LEVEL SECURITY;
@@ -99,6 +116,18 @@ ALTER TABLE registros_acesso ENABLE ROW LEVEL SECURITY;
 
 -- Create policies for authenticated users
 -- Note: Adjust these policies based on your security requirements
+
+-- Usuarios policies
+CREATE POLICY "Users can view their own profile" ON usuarios
+    FOR SELECT USING (auth.uid() = id);
+
+CREATE POLICY "Users can update their own profile" ON usuarios
+    FOR UPDATE USING (auth.uid() = id);
+
+-- Política temporária para permitir inserção durante cadastro
+-- Em produção, ajuste conforme necessário
+CREATE POLICY "Enable insert for new users" ON usuarios
+    FOR INSERT WITH CHECK (true);
 
 -- Vagas policies
 CREATE POLICY "Enable read access for authenticated users" ON vagas

@@ -55,7 +55,13 @@
 
 .main-content {
   padding: 2rem;
-  max-width: 1200px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
@@ -99,18 +105,26 @@
   background: #000;
   border-radius: 10px;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 .video-container video {
   display: block;
   max-width: 100%;
   height: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
 }
 
 .overlay-canvas {
   position: absolute;
   top: 0;
   left: 0;
+  pointer-events: none;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .camera-placeholder {
@@ -153,5 +167,819 @@
   .camera-placeholder {
     width: 100%;
     height: 400px;
+  }
+}
+
+/* ===== ESTILOS PARA SEÇÃO DE REGISTROS ===== */
+
+.registros-section {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.registros-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.registros-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.btn-refresh {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: transform 0.2s;
+}
+
+.btn-refresh:hover {
+  transform: rotate(180deg);
+}
+
+.registros-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.registros-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.registros-count {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.registro-card {
+  background: #f8f9fa;
+  border-left: 4px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.registro-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.registro-card.entrada {
+  border-left-color: #28a745;
+  background: linear-gradient(90deg, #d4edda 0%, #f8f9fa 10%);
+}
+
+.registro-card.saida {
+  border-left-color: #dc3545;
+  background: linear-gradient(90deg, #f8d7da 0%, #f8f9fa 10%);
+}
+
+.registro-tipo {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.registro-pessoa strong {
+  display: block;
+  color: #333;
+  margin-bottom: 0.2rem;
+}
+
+.registro-pessoa span {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.registro-veiculo, .registro-tempo, .registro-obs, .registro-status {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0.3rem 0;
+}
+
+.registro-status {
+  font-weight: 500;
+}
+
+/* ===== ESTILOS PARA SEÇÃO DE MORADORES ===== */
+
+/* Seção de Moradores */
+.moradores-section {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.moradores-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.moradores-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.btn-add {
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-add:hover {
+  transform: translateY(-2px);
+}
+
+/* Filtros */
+.filters-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-box {
+  flex: 1;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.filter-box {
+  min-width: 150px;
+}
+
+.filter-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+/* Lista de Moradores */
+.moradores-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.moradores-count {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.loading, .no-moradores {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Cards de Moradores */
+.morador-card {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.morador-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.morador-info {
+  flex: 1;
+}
+
+.morador-main h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.apartamento {
+  font-weight: 600;
+  color: #667eea;
+  margin: 0 0 0.5rem 0;
+}
+
+.telefone, .email {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.veiculos-info {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.veiculos-info h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.veiculo-item {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0.2rem 0;
+}
+
+/* Ações dos Cards */
+.morador-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.btn-edit, .btn-view, .btn-entrada, .btn-saida {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background 0.2s;
+}
+
+.btn-edit:hover {
+  background: #ffeaa7;
+}
+
+.btn-view:hover {
+  background: #74b9ff;
+  color: white;
+}
+
+.btn-entrada:hover {
+  background: #d4edda;
+}
+
+.btn-saida:hover {
+  background: #f8d7da;
+}
+
+/* Status do reconhecimento facial */
+.reconhecimento-status {
+  margin-top: 0.5rem;
+}
+
+.rosto-cadastrado {
+  color: #28a745;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.rosto-pendente {
+  color: #dc3545;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Status do reconhecimento na câmera */
+.recognition-status {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #28a745;
+}
+
+.person-recognized h3 {
+  margin: 0 0 0.5rem 0;
+  color: #28a745;
+  font-size: 1.1rem;
+}
+
+.person-recognized p {
+  margin: 0.25rem 0;
+  color: #495057;
+}
+
+.access-registered {
+  color: #28a745 !important;
+  font-weight: 600;
+  margin-top: 0.5rem !important;
+}
+
+.cooldown-status {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.cooldown-info {
+  color: #856404 !important;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0 !important;
+  font-size: 0.9rem;
+}
+
+.cooldown-timer {
+  color: #fd7e14 !important;
+  font-weight: 600;
+  margin: 0 !important;
+  font-size: 1rem;
+}
+
+/* Anti-Spoofing Alerts */
+.spoofing-alert {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.spoofing-alert.warning {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  color: #856404;
+}
+
+.spoofing-alert.danger {
+  background: #f8d7da;
+  border: 2px solid #dc3545;
+  color: #721c24;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* Validação de Liveness */
+.liveness-validation {
+  background: #d1ecf1;
+  border: 1px solid #bee5eb;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.validation-info {
+  color: #0c5460 !important;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0 !important;
+  font-size: 0.9rem;
+}
+
+.validation-instructions {
+  color: #155724 !important;
+  font-weight: 500;
+  margin: 0 !important;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* Responsividade para Layout de Três Colunas */
+@media (max-width: 1400px) {
+  .content-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  
+  .registros-section {
+    grid-column: 1 / -1;
+    order: 1;
+    max-height: 50vh;
+  }
+  
+  .camera-section {
+    order: 2;
+  }
+  
+  .moradores-section {
+    order: 3;
+    max-height: 60vh;
+  }
+}
+
+@media (max-width: 1200px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .registros-section {
+    order: 1;
+    max-height: 40vh;
+  }
+  
+  .camera-section {
+    order: 3;
+  }
+  
+  .moradores-section {
+    order: 2;
+    max-height: 50vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .registros-filters {
+    gap: 0.5rem;
+  }
+  
+  .registros-header, .moradores-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .filters-container {
+    flex-direction: column;
+  }
+  
+  .morador-card {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .morador-actions {
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+}
+
+/* ===== ESTILOS PARA MODAL DE EDIÇÃO ===== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.form-section {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.form-section h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.1rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-row:last-child {
+  margin-bottom: 0;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input {
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+/* Seção de captura facial */
+.captured-face-preview {
+  text-align: center;
+  padding: 1rem;
+  background: #e8f5e8;
+  border-radius: 8px;
+}
+
+.captured-face-preview img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #4caf50;
+  margin-bottom: 0.5rem;
+}
+
+.captured-face-preview p {
+  margin: 0.5rem 0;
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.face-capture-section {
+  text-align: center;
+  padding: 1rem;
+  background: #fff3cd;
+  border-radius: 8px;
+}
+
+.face-capture-section p {
+  margin: 0 0 1rem 0;
+  color: #856404;
+  font-weight: 500;
+}
+
+.camera-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.btn-camera, .btn-capture, .btn-recapture, .btn-debug {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-camera {
+  background: #667eea;
+  color: white;
+}
+
+.btn-capture {
+  background: #28a745;
+  color: white;
+}
+
+.btn-recapture {
+  background: #ffc107;
+  color: #212529;
+}
+
+.btn-debug {
+  background: #6c757d;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.btn-camera:hover, .btn-capture:hover, .btn-recapture:hover, .btn-debug:hover {
+  transform: translateY(-2px);
+}
+
+.video-preview {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.video-preview video {
+  border-radius: 8px;
+  border: 2px solid #667eea;
+}
+
+.loading-models {
+  text-align: center;
+  padding: 1rem;
+  background: #e3f2fd;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.loading-models p {
+  margin: 0 0 0.5rem 0;
+  color: #1976d2;
+  font-weight: 600;
+}
+
+.loading-models small {
+  color: #666;
+}
+
+/* Footer do Modal */
+.modal-footer {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  border-radius: 0 0 12px 12px;
+}
+
+.btn-cancel, .btn-save {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-cancel {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-cancel:hover, .btn-save:hover {
+  transform: translateY(-2px);
+}
+
+.btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsividade do Modal */
+@media (max-width: 768px) {
+  .modal-content {
+    margin: 0;
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 100vh;
+  }
+  
+  .modal-header {
+    border-radius: 0;
+  }
+  
+  .modal-footer {
+    border-radius: 0;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .camera-controls {
+    flex-direction: column;
   }
 }

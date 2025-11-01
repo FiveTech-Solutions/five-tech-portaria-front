@@ -4,6 +4,7 @@ import { supabase } from './supabaseClient';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
+import CadastroUsuario from './pages/CadastroUsuario';
 import './App.css';
 
 function App() {
@@ -48,6 +49,10 @@ function App() {
         <Route 
           path="/login" 
           element={!session ? <Login /> : <Navigate to="/" />} 
+        />
+        <Route 
+          path="/cadastro-usuario" 
+          element={!session ? <CadastroUsuario /> : <Navigate to="/" />} 
         />
         <Route 
           path="/" 

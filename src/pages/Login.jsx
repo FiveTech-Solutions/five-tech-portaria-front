@@ -68,6 +68,18 @@ function Login() {
             {loading ? 'Entrando...' : 'Entrar'}
           </button>
         </form>
+        
+        <div className="signup-link">
+          <p>Não tem uma conta? 
+            <button 
+              type="button"
+              className="link-button"
+              onClick={() => navigate('/cadastro-usuario')}
+            >
+              Cadastre-se aqui
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );
