@@ -1,0 +1,204 @@
+/* Estilos compartilhados para os Cards de Reconhecimento */
+.recognition-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+}
+
+.recognition-card h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #343a40;
+  text-align: center;
+  border-bottom: 1px solid #f1f3f5;
+  padding-bottom: 0.75rem;
+}
+
+.camera-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loading-text {
+  font-style: italic;
+  color: #6c757d;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-top: 75%; /* Proporção 4:3 */
+  background-color: #000;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.video-container video,
+.overlay-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #adb5bd;
+  background-color: #212529;
+}
+
+.spoofing-alert,
+.recognition-status {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.spoofing-alert.warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.spoofing-alert.danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.recognition-status {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+/* Seção do Portão */
+.gate-section {
+  border-top: 1px solid #f1f3f5;
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.gate-section h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.1rem;
+  color: #495057;
+}
+
+.gate-animation {
+  position: relative;
+  height: 80px; /* Altura da animação */
+  width: 150px; /* Largura da animação */
+  margin: 0 auto 0.5rem auto;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden; /* Essencial para a animação de deslize */
+}
+
+.gate-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 4px solid #495057;
+  box-sizing: border-box;
+}
+
+.gate-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #6c757d, #343a40);
+  transition: transform 2s ease-in-out; /* Duração da animação */
+}
+
+/* Animação Portão Social (Deslizante) */
+.social-gate .gate-animation.opening .gate-panel,
+.social-gate .gate-animation.open .gate-panel {
+  transform: translateX(100%);
+}
+
+.social-gate .gate-animation.closing .gate-panel,
+.social-gate .gate-animation.closed .gate-panel {
+  transform: translateX(0);
+}
+
+/* Animação Portão Garagem (Elevação) */
+.garage-gate .gate-panel {
+  transform-origin: top;
+}
+
+.garage-gate .gate-animation.opening .gate-panel,
+.garage-gate .gate-animation.open .gate-panel {
+  transform: scaleY(0);
+}
+
+.garage-gate .gate-animation.closing .gate-panel,
+.garage-gate .gate-animation.closed .gate-panel {
+  transform: scaleY(1);
+}
+
+.gate-status-text {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.manual-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn-gate-open,
+.btn-gate-close {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.btn-gate-open {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-gate-open:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.btn-gate-close {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-gate-close:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.btn-gate-open:disabled,
+.btn-gate-close:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}

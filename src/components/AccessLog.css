@@ -1,0 +1,150 @@
+/* Estilos para a Seção de Registros de Acesso (Compacta) */
+.registros-section.compact {
+  background-color: #fdfdfd;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  height: 100%; 
+  overflow: hidden;
+}
+
+.registros-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.registros-header h2 {
+  margin: 0;
+  font-size: 1.1rem; /* Fonte menor */
+  color: #333;
+}
+
+.btn-refresh {
+  background: none;
+  border: none;
+  font-size: 1.2rem; /* Menor */
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.btn-refresh:disabled {
+  cursor: not-allowed;
+  animation: spin 1s linear infinite;
+}
+
+.btn-refresh:hover:not(:disabled) {
+  transform: rotate(90deg);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Lista de Registros Compacta */
+.registros-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Espaçamento menor */
+}
+
+.registro-card-compact {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 5px;
+  border-left: 4px solid;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.registro-card-compact.entrada {
+  border-left-color: #28a745;
+}
+
+.registro-card-compact.saida {
+  border-left-color: #dc3545;
+}
+
+.registro-icon {
+  font-size: 1rem;
+}
+
+.registro-info-compact {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.registro-nome {
+  font-weight: 600;
+  color: #444;
+  font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.registro-tempo {
+  font-size: 0.8rem;
+  color: #777;
+  flex-shrink: 0; /* Não encolher o tempo */
+}
+
+.loading, .no-registros {
+  text-align: center;
+  padding: 2rem 0;
+  color: #888;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* Controles de Paginação */
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid #eee;
+  margin-top: 0.75rem;
+}
+
+.pagination-controls span {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.pagination-controls button {
+  background-color: #e9ecef;
+  border: 1px solid #dee2e6;
+  color: #495057;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+  background-color: #ced4da;
+}
+
+.pagination-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
