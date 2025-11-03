@@ -217,7 +217,7 @@ export const HomeProvider = ({ children }) => {
     setSocialGateStatus('opening');
     setTimeout(() => {
       setSocialGateStatus('open');
-      socialGateTimer.current = setTimeout(closeSocialGate, 12000);
+      socialGateTimer.current = setTimeout(closeSocialGate, 10000);
     }, 2500);
   };
 
@@ -233,7 +233,7 @@ export const HomeProvider = ({ children }) => {
     setGarageGateStatus('opening');
     setTimeout(() => {
       setGarageGateStatus('open');
-      garageGateTimer.current = setTimeout(closeGarageGate, 20000);
+      garageGateTimer.current = setTimeout(closeGarageGate, 10000);
     }, 4000);
   };
 
