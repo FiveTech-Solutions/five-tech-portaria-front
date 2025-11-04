@@ -37,10 +37,18 @@ const FacialRecognitionCard = () => {
     return () => stopVideo();
   }, [isFacialCameraActive]);
 
+  useEffect(() => {
+    if (socialGateStatus == 'open') {
+      setTimeout(() => {
+        closeSocialGate();
+      }, 5000);
+    }
+  }, [socialGateStatus]);
+
   const startVideo = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { width: 480, height: 360 } 
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: 480, height: 360 }
       });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
@@ -68,7 +76,7 @@ const FacialRecognitionCard = () => {
       try {
         const video = videoRef.current;
         const canvas = canvasRef.current;
-        
+
         const detections = await faceapi
           .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
           .withFaceLandmarks()
@@ -77,7 +85,7 @@ const FacialRecognitionCard = () => {
         const displaySize = { width: video.offsetWidth, height: video.offsetHeight };
         faceapi.matchDimensions(canvas, displaySize);
         const resizedDetections = faceapi.resizeResults(detections, displaySize);
-        
+
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -121,7 +129,7 @@ const FacialRecognitionCard = () => {
       } finally {
         setIsProcessingFacial(false);
       }
-    }, 1000); // Intervalo de 1 segundo para evitar sobrecarga
+    }, 5000); // Intervalo de 5 segundos para evitar sobrecarga
 
     return () => clearInterval(interval);
   };
@@ -135,7 +143,7 @@ const FacialRecognitionCard = () => {
         </button>
         {!isModelLoaded && <p className="loading-text">Carregando modelos...</p>}
       </div>
-      
+
       <div className="video-container">
         {isFacialCameraActive ? (
           <>
@@ -154,17 +162,11 @@ const FacialRecognitionCard = () => {
         )}
       </div>
 
-      {spoofingAlert && (
-        <div className={`spoofing-alert ${spoofingAlert.type}`}>
-          <p>{spoofingAlert.message}</p>
-        </div>
-      )}
-
-      {recognizedPerson && (
-        <div className="recognition-status">
+      <div className="recognition-status">
+        {recognizedPerson && (
           <p>✅ {recognizedPerson.nome} Reconhecido</p>
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="gate-section social-gate">
         <h3>🚶‍♂️ Portão de Entrada Social</h3>
@@ -174,10 +176,10 @@ const FacialRecognitionCard = () => {
           </div>
         </div>
         <div className="gate-status-text">
-            {socialGateStatus === 'closed' && '🔒 Fechado'}
-            {socialGateStatus === 'opening' && 'Abrindo...'}
-            {socialGateStatus === 'open' && '✅ Aberto'}
-            {socialGateStatus === 'closing' && 'Fechando...'}
+          {socialGateStatus === 'closed' && '🔒 Fechado'}
+          {socialGateStatus === 'opening' && 'Abrindo...'}
+          {socialGateStatus === 'open' && '✅ Aberto'}
+          {socialGateStatus === 'closing' && 'Fechando...'}
         </div>
         <div className="manual-controls">
           <button onClick={openSocialGate} disabled={socialGateStatus !== 'closed'} className="btn-gate-open">

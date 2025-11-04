@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as faceapi from 'face-api.js';
 import Tesseract from 'tesseract.js';
@@ -22,6 +22,7 @@ export const HomeProvider = ({ children }) => {
   const [isProcessingFacial, setIsProcessingFacial] = useState(false);
   const [isProcessingOCR, setIsProcessingOCR] = useState(false);
   const [ocrWorker, setOcrWorker] = useState(null);
+  const [ocrError, setOcrError] = useState(null);
 
   // --- Data ---
   const [moradores, setMoradores] = useState([]);
@@ -133,15 +134,21 @@ export const HomeProvider = ({ children }) => {
 
   const initializeOcrWorker = async () => {
     try {
-      const worker = await Tesseract.createWorker();
-      await worker.loadLanguage('eng');
-      await worker.initialize('eng');
+      setOcrError(null);
+      const worker = await Tesseract.createWorker('eng', 1, {
+        workerPath: '/models/worker.min.js',
+        corePath: '/models/tesseract-core.wasm.js',
+        langPath: '/models/',
+        logger: m => console.log(m), // Adiciona um logger para debug
+      });
       await worker.setParameters({
         tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-',
+        tessedit_pageseg_mode: Tesseract.PSM.SINGLE_LINE,
       });
       setOcrWorker(worker);
     } catch (error) {
-      console.error('Erro ao inicializar Tesseract worker:', error);
+      console.error('Erro ao inicializar Tesseract worker localmente:', error);
+      setOcrError('Falha ao carregar o módulo OCR local. Verifique o console para mais detalhes.');
     }
   };
 
@@ -195,16 +202,18 @@ export const HomeProvider = ({ children }) => {
       }
 
       console.log(`REGISTRO: Acesso tipo '${newType}' para ${personId} registrado com sucesso.`);
-      await loadRegistros(); // Recarrega os logs
       
-      // Abre o portão correto apenas na entrada
-      if (newType === 'entrada') {
-        if (method.includes('facial')) {
-          openSocialGate();
-        } else if (method.includes('placa')) {
-          openGarageGate();
-        }
+      // Aciona o portão correto após o registro bem-sucedido
+      if (method.includes('facial')) {
+        openSocialGate();
+      } else if (method.includes('placa')) {
+        openGarageGate();
       }
+
+      // Recarrega os logs para mostrar o novo registro
+      await loadRegistros(1); 
+      setRegistrosPage(1);
+
     } catch (error) {
       console.error('Erro ao registrar acesso no Supabase:', error);
     }
@@ -212,37 +221,37 @@ export const HomeProvider = ({ children }) => {
 
   // ========== GATE CONTROL ==========
 
-  const openSocialGate = () => {
+  const closeSocialGate = useCallback(() => {
+    if (socialGateStatus !== 'open') return;
+    clearTimeout(socialGateTimer.current);
+    setSocialGateStatus('closing');
+    setTimeout(() => setSocialGateStatus('closed'), 2500);
+  }, [socialGateStatus]);
+
+  const openSocialGate = useCallback(() => {
     if (socialGateStatus !== 'closed') return;
     setSocialGateStatus('opening');
     setTimeout(() => {
       setSocialGateStatus('open');
       socialGateTimer.current = setTimeout(closeSocialGate, 10000);
     }, 2500);
-  };
+  }, [socialGateStatus, closeSocialGate]);
 
-  const closeSocialGate = () => {
-    if (socialGateStatus !== 'open') return;
-    clearTimeout(socialGateTimer.current);
-    setSocialGateStatus('closing');
-    setTimeout(() => setSocialGateStatus('closed'), 2500);
-  };
+  const closeGarageGate = useCallback(() => {
+    if (garageGateStatus !== 'open') return;
+    clearTimeout(garageGateTimer.current);
+    setGarageGateStatus('closing');
+    setTimeout(() => setGarageGateStatus('closed'), 4000);
+  }, [garageGateStatus]);
 
-  const openGarageGate = () => {
+  const openGarageGate = useCallback(() => {
     if (garageGateStatus !== 'closed') return;
     setGarageGateStatus('opening');
     setTimeout(() => {
       setGarageGateStatus('open');
       garageGateTimer.current = setTimeout(closeGarageGate, 10000);
     }, 4000);
-  };
-
-  const closeGarageGate = () => {
-    if (garageGateStatus !== 'open') return;
-    clearTimeout(garageGateTimer.current);
-    setGarageGateStatus('closing');
-    setTimeout(() => setGarageGateStatus('closed'), 4000);
-  };
+  }, [garageGateStatus, closeGarageGate]);
 
   // ========== PUBLIC API (VALUE) ==========
 
@@ -265,6 +274,7 @@ export const HomeProvider = ({ children }) => {
     garageGateStatus,
     lastAccessTime,
     ACCESS_COOLDOWN,
+    ocrError,
 
     // Setters & Toggles
     setIsFacialCameraActive,
